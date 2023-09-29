@@ -6,9 +6,7 @@ const data = await fetch(
 
 // Components that are build-time rendered also log to the CLI.
 // When rendered with a client:* directive, they also log to the browser console.
-console.log(data);
-
-export const Emails: FunctionalComponent = () => {
+export const Emails: FC<{ className?: string }> = ({ className }) => {
   // Output the result to the page
-  return <div>{JSON.stringify(data)}</div>;
+  return <div className={className}>{JSON.stringify(data)}</div>;
 };

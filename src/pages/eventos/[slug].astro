@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Emails } from "../../components/Emails";
+import { PageArticle } from "../../components/PageArticle";
+
+import fetchApi from "../../lib/strapi";
+
+import type { Article } from "../../types/article";
+import type { PreparedArticle } from "../../components/PageArticle";
+
+export async function getStaticPaths() {
+  const articles = await fetchApi<Article[]>({
+    endpoint: "articles", // the content type to fetch
+    wrappedByKey: "data", // the key to unwrap the response
+  });
+
+  const preparedArticles: PreparedArticle[] = articles.map((article) => ({
+    title: article.attributes.title,
+    description: article.attributes.description,
+    coverUrl:
+      import.meta.env.STRAPI_URL + article.attributes.cover.data.attributes.url,
+  }));
+
+  return preparedArticles.map((article) => ({
+      params: { slug: article.title.toLowerCase().replace(/ /g, "-") },
+      props: { article }
+    }))
+}
+
+const { slug } = Astro.params;
+const {article} = Astro.props;
+
+---
+
+<Layout title="Welcome to Astro." description='Astro' ogImgUrl='https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg?sqp=-oaymwEmCOADEOgC8quKqQMa8AEB-AG-AoAC8AGKAgwIABABGFogVShlMA8=&rs=AOn4CLCJ9RIh-_gj3a0W8l6CngMsNnW1aQ'>
+	<main class="flex flex-col items-center justify-center h-screen w-full gap-y-10">
+		<PageArticle {...article}/>
+		<Emails className='bg-slate-500'/>
+	</main>
+</Layout>
