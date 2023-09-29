@@ -27,7 +27,6 @@ export async function getStaticPaths() {
     }))
 }
 
-const { slug } = Astro.params;
 const {article} = Astro.props;
 
 ---
@@ -35,6 +34,5 @@ const {article} = Astro.props;
 <Layout title="Welcome to Astro." description='Astro' ogImgUrl='https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg?sqp=-oaymwEmCOADEOgC8quKqQMa8AEB-AG-AoAC8AGKAgwIABABGFogVShlMA8=&rs=AOn4CLCJ9RIh-_gj3a0W8l6CngMsNnW1aQ'>
 	<main class="flex flex-col items-center justify-center h-screen w-full gap-y-10">
 		<PageArticle {...article}/>
-		<Emails className='bg-slate-500'/>
 	</main>
 </Layout>
